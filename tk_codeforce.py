@@ -8,7 +8,7 @@ class UsernameError(Exception):
     '''raised if invalid username'''
 
 def get_data(frame):
-	username_label = tk.Label(frame, text='user name', width=15)
+    username_label = tk.Label(frame, text='user name', width=15)
     username_label.place(x=10, y=100)
 
     entry = tk.Entry(frame, text='User name')
@@ -21,12 +21,10 @@ def get_data(frame):
 def main_gui(frame, username):
     if not username:
         username = 'Anu2006 (for testing purposes)' 
-
-    widgets = []
     userinfo_names = ['current_rating', 'current_rank', 'max_rating', 			      'max_rank']
     positions = [180, 200, 220, 240]
-    resp = get_url(quote(username))
-    cleaned_data = clean_data(resp)
+    resp = get_url(frame, quote(username))
+    cleaned_data = clean_data(frame, resp)
     if frame.place_slaves():
         for widget in frame.place_slaves():
             widget.destroy()
@@ -52,7 +50,7 @@ def main_gui(frame, username):
     
     
 # get json
-def get_url(username):
+def get_url(frame, username):
     url = f'https://codeforces.com/api/user.rating?handle={username}' 
     # with open('new.txt', 'w') as fp:
     #     fp.write(requests.get(url).text)
@@ -68,7 +66,7 @@ def get_url(username):
 
 
 # data cleaning
-def clean_data(json_data):
+def clean_data(frame, json_data):
     raw_data = json.loads(json_data)
     if raw_data['status'] == 'FAILED':
         tk.Label(frame, text=f'Invalid Username!').place(x=120, y=140)
